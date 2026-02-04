@@ -400,6 +400,17 @@ body {
   margin: 20px 0;
 }
 
+/* Inline link */
+.inline-link {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.inline-link:hover {
+  color: #1d4ed8;
+}
+
 /* Back link */
 .back-link {
   display: inline-block;
