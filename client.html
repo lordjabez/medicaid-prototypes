@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicaid Application — Medical Frailty</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">&larr; Back to prototype home</a>
+
+    <div class="card">
+      <div class="brand">Pennsylvania DHS — Medicaid Application</div>
+
+      <!-- Progress bar -->
+      <div class="progress-bar">
+        <div class="progress-dot active" id="dot-1"></div>
+        <div class="progress-dot" id="dot-2"></div>
+        <div class="progress-dot" id="dot-3"></div>
+        <div class="progress-dot" id="dot-4"></div>
+      </div>
+
+      <!-- Screen 1: Medical condition question -->
+      <div class="screen active" id="screen-1">
+        <h2>Medical Condition</h2>
+        <p class="question">Do you have a medical condition that prevents you from working at least 80 hours a month?</p>
+
+        <div class="radio-group" id="condition-options">
+          <label class="radio-option" onclick="selectRadio(this, 'condition')">
+            <input type="radio" name="condition" value="yes">
+            <span class="radio-label">
+              <span class="label-title">Yes</span>
+              <span class="label-desc">I have a condition that limits my ability to work</span>
+            </span>
+          </label>
+          <label class="radio-option" onclick="selectRadio(this, 'condition')">
+            <input type="radio" name="condition" value="no">
+            <span class="radio-label">
+              <span class="label-title">No</span>
+              <span class="label-desc">I do not have a limiting medical condition</span>
+            </span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" id="btn-next-1" disabled onclick="goToScreen(2)">Continue</button>
+      </div>
+
+      <!-- Screen 2: Doctor outreach consent -->
+      <div class="screen" id="screen-2">
+        <h2>Doctor Verification</h2>
+        <p class="question">Would you like us to reach out to your doctor to verify your diagnosis?</p>
+
+        <div class="radio-group" id="consent-options">
+          <label class="radio-option" onclick="selectRadio(this, 'consent')">
+            <input type="radio" name="consent" value="yes">
+            <span class="radio-label">
+              <span class="label-title">Yes, contact my doctor</span>
+              <span class="label-desc">We'll send a short verification form to your doctor by email</span>
+            </span>
+          </label>
+          <label class="radio-option" onclick="selectRadio(this, 'consent')">
+            <input type="radio" name="consent" value="no">
+            <span class="radio-label">
+              <span class="label-title">No, I'll provide documentation myself</span>
+              <span class="label-desc">You will need to submit medical documentation on your own</span>
+            </span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" id="btn-next-2" disabled onclick="goToScreen(3)">Continue</button>
+        <button class="btn btn-secondary" onclick="goToScreen(1)">Back</button>
+      </div>
+
+      <!-- Screen 3: Doctor email input -->
+      <div class="screen" id="screen-3">
+        <h2>Doctor's Contact</h2>
+        <p>Please provide your doctor's email address so we can send them the verification form.</p>
+
+        <div class="form-group">
+          <label for="doctor-email">Doctor's email address</label>
+          <input type="email" id="doctor-email" placeholder="doctor@example.com" oninput="validateEmail()">
+        </div>
+
+        <div class="form-group">
+          <label for="doctor-email-confirm">Confirm email address</label>
+          <input type="email" id="doctor-email-confirm" placeholder="doctor@example.com" oninput="validateEmail()">
+        </div>
+
+        <button class="btn btn-primary" id="btn-submit" disabled onclick="goToScreen(4)">Submit</button>
+        <button class="btn btn-secondary" onclick="goToScreen(2)">Back</button>
+      </div>
+
+      <!-- Screen 4: Next steps -->
+      <div class="screen" id="screen-4">
+        <h2>What Happens Next</h2>
+        <p>We've received your information. Here's what to expect:</p>
+
+        <ol class="steps-list">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">We send a verification form to your doctor by email.</span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">Your doctor has 10 business days to confirm your medical condition.</span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">Once verified, your work requirement waiver is applied to your account.</span>
+          </li>
+          <li>
+            <span class="step-number">4</span>
+            <span class="step-text">You'll receive a notification confirming your updated Medicaid status.</span>
+          </li>
+        </ol>
+
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectRadio(option, groupName) {
+      // Clear selection styling in group
+      const group = option.closest('.radio-group');
+      group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+      option.querySelector('input[type="radio"]').checked = true;
+
+      // Enable the continue button
+      if (groupName === 'condition') {
+        document.getElementById('btn-next-1').disabled = false;
+      } else if (groupName === 'consent') {
+        document.getElementById('btn-next-2').disabled = false;
+      }
+    }
+
+    function validateEmail() {
+      const email = document.getElementById('doctor-email').value;
+      const confirm = document.getElementById('doctor-email-confirm').value;
+      const btn = document.getElementById('btn-submit');
+
+      const isValid = email.length > 0 && email.includes('@') && email === confirm;
+      btn.disabled = !isValid;
+    }
+
+    function goToScreen(num) {
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      // Show target screen
+      document.getElementById('screen-' + num).classList.add('active');
+
+      // Update progress dots
+      document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < num);
+      });
+    }
+  </script>
+</body>
+</html>

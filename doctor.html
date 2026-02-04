@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Frailty Verification — Provider Form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">&larr; Back to prototype home</a>
+
+    <div class="card">
+      <div class="brand">Pennsylvania Department of Human Services</div>
+
+      <!-- Screen 1: Verification form -->
+      <div class="screen active" id="doctor-form">
+        <h1>Medical Frailty Verification</h1>
+        <p>Please review and respond to the following verification request.</p>
+
+        <div class="doctor-letter">
+          <p>Dear <span class="placeholder">[DOCTOR NAME]</span>,</p>
+
+          <p>Your patient, <span class="placeholder">[PATIENT NAME]</span>, has applied for a work requirement waiver through Pennsylvania Medicaid based on a medical frailty condition.</p>
+
+          <p>Under Pennsylvania's Medicaid work requirements, beneficiaries must complete 80 hours of qualifying activities per month. Individuals with verified medical frailty conditions are exempt from this requirement.</p>
+
+          <p>We are requesting your professional verification to process this waiver. Please respond within <strong>10 business days</strong>.</p>
+        </div>
+
+        <p class="question">Can you verify that <span class="placeholder">[PATIENT NAME]</span> has a medical condition that prevents them from working at least 80 hours per month?</p>
+
+        <div class="radio-group" id="verify-options">
+          <label class="radio-option" onclick="selectVerify(this)">
+            <input type="radio" name="verify" value="yes">
+            <span class="radio-label">
+              <span class="label-title">Yes, I can verify</span>
+              <span class="label-desc">This patient has a condition that limits their ability to work 80 hours/month</span>
+            </span>
+          </label>
+          <label class="radio-option" onclick="selectVerify(this)">
+            <input type="radio" name="verify" value="no">
+            <span class="radio-label">
+              <span class="label-title">No, I cannot verify</span>
+              <span class="label-desc">I am unable to verify this condition at this time</span>
+            </span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" id="btn-doctor-submit" disabled onclick="submitForm()">Submit Verification</button>
+      </div>
+
+      <!-- Screen 2: Confirmation -->
+      <div class="screen" id="doctor-confirm">
+        <div class="text-center">
+          <div class="confirmation-icon">&#10003;</div>
+          <h2>Thank You</h2>
+          <p>Your response has been submitted to the Pennsylvania DHS Medicaid Office.</p>
+          <p class="subtitle">No further action is needed. The patient will be notified of their waiver status.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">Return to Prototype Home</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectVerify(option) {
+      const group = option.closest('.radio-group');
+      group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+      option.querySelector('input[type="radio"]').checked = true;
+
+      document.getElementById('btn-doctor-submit').disabled = false;
+    }
+
+    function submitForm() {
+      document.getElementById('doctor-form').classList.remove('active');
+      document.getElementById('doctor-confirm').classList.add('active');
+    }
+  </script>
+</body>
+</html>
