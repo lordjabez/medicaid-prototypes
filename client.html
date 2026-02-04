@@ -91,7 +91,7 @@
         <button class="btn btn-secondary" onclick="goToScreen(2)">Back</button>
       </div>
 
-      <!-- Screen 4: Next steps -->
+      <!-- Screen 4: Next steps (doctor contact path) -->
       <div class="screen" id="screen-4">
         <h2>What Happens Next</h2>
         <p>We've received your information. Here's what to expect:</p>
@@ -116,6 +116,63 @@
         </ol>
 
         <button class="btn btn-primary" onclick="window.location.href='index.html'">Done</button>
+      </div>
+
+      <!-- Screen: No medical condition -->
+      <div class="screen" id="screen-no-condition">
+        <h2>Work Requirement Applies</h2>
+        <p>Based on your response, you do not qualify for a medical frailty waiver at this time.</p>
+        <p>You are required to complete <strong>80 hours per month</strong> of qualifying activities, which include:</p>
+
+        <ol class="steps-list">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">Employment or self-employment</span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">Job search or job training programs</span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">Education or vocational coursework</span>
+          </li>
+          <li>
+            <span class="step-number">4</span>
+            <span class="step-text">Community service or volunteer work</span>
+          </li>
+        </ol>
+
+        <p class="subtitle">If your circumstances change and you develop a medical condition that limits your ability to work, you can return here to request a waiver.</p>
+
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">Done</button>
+        <button class="btn btn-secondary" onclick="goToScreen(1)">Back</button>
+      </div>
+
+      <!-- Screen: Self-submit documentation -->
+      <div class="screen" id="screen-self-submit">
+        <h2>Submit Your Own Documentation</h2>
+        <p>You will need to provide medical documentation that supports your waiver request. Acceptable documents include:</p>
+
+        <ol class="steps-list">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">A signed letter from your doctor describing your condition and its impact on your ability to work</span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">Medical records or a diagnosis summary</span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">A completed Pennsylvania DHS Medical Frailty Certification Form (MA-51)</span>
+          </li>
+        </ol>
+
+        <p>Submit documents by mail or upload them through your Medicaid account portal. Documentation must be received within <strong>30 days</strong>.</p>
+
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">Done</button>
+        <button class="btn btn-secondary" onclick="goToScreen(2)">Back</button>
       </div>
     </div>
   </div>
@@ -146,14 +203,33 @@
     }
 
     function goToScreen(num) {
-      // Hide all screens
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      // Show target screen
-      document.getElementById('screen-' + num).classList.add('active');
+      // Branch on Screen 1: if "No" condition, go to no-condition screen
+      if (num === 2) {
+        const condition = document.querySelector('input[name="condition"]:checked');
+        if (condition && condition.value === 'no') {
+          showScreen('screen-no-condition', 4);
+          return;
+        }
+      }
 
-      // Update progress dots
+      // Branch on Screen 2: if "No" consent, go to self-submit screen
+      if (num === 3) {
+        const consent = document.querySelector('input[name="consent"]:checked');
+        if (consent && consent.value === 'no') {
+          showScreen('screen-self-submit', 3);
+          return;
+        }
+      }
+
+      showScreen('screen-' + num, num);
+    }
+
+    function showScreen(id, progressStep) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
       document.querySelectorAll('.progress-dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i < num);
+        dot.classList.toggle('active', i < progressStep);
       });
     }
   </script>

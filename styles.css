@@ -340,12 +340,18 @@ body {
   width: 56px;
   height: 56px;
   background: #d1fae5;
+  color: #065f46;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 12px auto 20px;
   font-size: 28px;
+}
+
+.confirmation-icon.decline-icon {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .text-center {

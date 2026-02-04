@@ -50,14 +50,41 @@
         <button class="btn btn-primary" id="btn-doctor-submit" disabled onclick="submitForm()">Submit Verification</button>
       </div>
 
-      <!-- Screen 2: Confirmation -->
+      <!-- Screen 2a: Confirmation (verified) -->
       <div class="screen" id="doctor-confirm">
         <div class="text-center">
           <div class="confirmation-icon">&#10003;</div>
           <h2>Thank You</h2>
-          <p>Your response has been submitted to the Pennsylvania DHS Medicaid Office.</p>
-          <p class="subtitle">No further action is needed. The patient will be notified of their waiver status.</p>
+          <p>Your verification has been submitted to the Pennsylvania DHS Medicaid Office.</p>
+          <p class="subtitle">No further action is needed. The patient will be notified that their waiver has been approved.</p>
         </div>
+
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">Return to Prototype Home</button>
+      </div>
+
+      <!-- Screen 2b: Confirmation (not verified) -->
+      <div class="screen" id="doctor-decline">
+        <div class="text-center">
+          <div class="confirmation-icon decline-icon">&#10007;</div>
+          <h2>Response Recorded</h2>
+          <p>Your response has been submitted to the Pennsylvania DHS Medicaid Office.</p>
+          <p>Because the condition could not be verified, the patient will be notified and given the option to:</p>
+        </div>
+
+        <ol class="steps-list">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">Submit their own medical documentation to support the waiver request</span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">Designate a different medical provider for verification</span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">Comply with the standard work requirement (80 hours/month)</span>
+          </li>
+        </ol>
 
         <button class="btn btn-primary" onclick="window.location.href='index.html'">Return to Prototype Home</button>
       </div>
@@ -75,8 +102,14 @@
     }
 
     function submitForm() {
+      const verify = document.querySelector('input[name="verify"]:checked');
       document.getElementById('doctor-form').classList.remove('active');
-      document.getElementById('doctor-confirm').classList.add('active');
+
+      if (verify && verify.value === 'no') {
+        document.getElementById('doctor-decline').classList.add('active');
+      } else {
+        document.getElementById('doctor-confirm').classList.add('active');
+      }
     }
   </script>
 </body>
