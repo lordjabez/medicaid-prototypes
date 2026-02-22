@@ -412,51 +412,6 @@
   .sig-actions { display: flex; gap: 8px; margin-bottom: 16px; }
   .sig-actions button { font-size: 12px; padding: 6px 14px; }
 
-  /* --- Program cards --- */
-  .program-option {
-    border: 2px solid #e2e2e2;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .program-option:hover { border-color: #97d4e9; background: #e7f6f8; }
-  .program-option.selected { border-color: #037493; background: #e7f6f8; }
-
-  .program-option input[type="radio"] {
-    margin-top: 3px;
-    accent-color: #0d7ea2;
-    flex-shrink: 0;
-  }
-
-  .program-option .program-name { font-weight: 600; font-size: 14px; color: #0f2549; }
-  .program-option .program-desc { font-size: 13px; color: #71767a; margin-top: 2px; }
-
-  /* --- Submit bar --- */
-  .submit-bar {
-    display: none;
-    background: #fff;
-    border: 1px solid #e2e2e2;
-    border-radius: 8px;
-    padding: 20px 24px;
-    margin-top: 20px;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .submit-bar.visible { display: flex; }
-
-  .submit-bar .checklist { display: flex; gap: 20px; font-size: 13px; color: #71767a; }
-  .submit-bar .check-item { display: flex; align-items: center; gap: 6px; }
-  .check-item .dot { width: 8px; height: 8px; border-radius: 50%; background: #c2c2c2; }
-  .check-item.done .dot { background: #037493; }
-  .check-item.done { color: #037493; }
-
   /* --- Completion overlay --- */
   .completion-overlay {
     display: none;
@@ -531,6 +486,65 @@
 
   hr { border: none; border-top: 1px solid #eff3f4; margin: 16px 0; }
 
+  /* --- Login screen --- */
+  .login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f5f5f5;
+  }
+
+  .login-card {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    padding: 40px 44px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+
+  .login-card .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .login-card .login-logo svg { height: 48px; width: 48px; }
+
+  .login-card .login-logo-text {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #0f2549;
+  }
+
+  .login-card .login-app-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #037493;
+    margin-bottom: 28px;
+  }
+
+  .login-card .form-group { margin-bottom: 16px; }
+
+  .login-card .btn-primary {
+    width: 100%;
+    padding: 11px 20px;
+    margin-top: 8px;
+  }
+
+  .app-wrap { display: none; }
+  .app-wrap.visible { display: block; }
+
+  @media (max-width: 420px) {
+    .login-card { margin: 16px; padding: 28px 24px; }
+  }
+
   /* --- Responsive: tablet and below --- */
   @media (max-width: 1100px) {
     header { padding: 0 16px; height: auto; min-height: 56px; flex-wrap: wrap; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
@@ -566,10 +580,6 @@
       margin-bottom: 16px;
     }
 
-    .submit-bar { flex-direction: column; gap: 14px; align-items: stretch; padding: 16px; }
-    .submit-bar .checklist { flex-wrap: wrap; gap: 10px; }
-    .submit-bar .btn-success { text-align: center; }
-
     .completion-card { padding: 28px 24px; margin: 16px; }
   }
 
@@ -586,6 +596,26 @@
 </head>
 <body>
 
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 77 77"><defs><style>.li{fill:#037493;}</style></defs><path class="li" d="M57.92,0H19A18.94,18.94,0,0,0,0,19v39A18.94,18.94,0,0,0,19,77h39A18.94,18.94,0,0,0,77,58V19A18.94,18.94,0,0,0,57.92,0ZM68.6,18.61a36,36,0,0,1,5.91,18.26,35.54,35.54,0,0,0-12.62-5.43A12.13,12.13,0,0,0,68.6,18.61ZM61.9,45.43A35.37,35.37,0,0,0,74.51,40,36,36,0,0,1,68.6,58.26a12.19,12.19,0,0,0,.15-1.82A12.32,12.32,0,0,0,61.9,45.43ZM56.62,33.1c7.32,0,13.68,3.63,16.26,5.34-2.58,1.7-8.94,5.34-16.26,5.34s-13.68-3.64-16.26-5.34C42.94,36.73,49.3,33.1,56.62,33.1ZM42,34.89a34,34,0,0,0,3.4-9.1,12.37,12.37,0,0,0,5.71,5.7A34,34,0,0,0,42,34.89Zm9.1,10.49a12.37,12.37,0,0,0-5.71,5.72A34.18,34.18,0,0,0,42,42,34,34,0,0,0,51.09,45.38Zm5.35.74A10.32,10.32,0,1,1,46.12,56.44,10.33,10.33,0,0,1,56.44,46.12Zm0-15.37A10.32,10.32,0,1,1,66.76,20.43,10.33,10.33,0,0,1,56.44,30.75Zm0-22.63a12.3,12.3,0,0,0-11,6.86A35.41,35.41,0,0,0,40,2.36,36,36,0,0,1,58.26,8.27,12.19,12.19,0,0,0,56.44,8.12ZM43.78,20.28c0,7.32-3.64,13.68-5.34,16.26C36.73,34,33.09,27.6,33.09,20.28S36.73,6.6,38.44,4C40.14,6.6,43.78,13,43.78,20.28Zm-35.51,38A36,36,0,0,1,2.36,40,35.56,35.56,0,0,0,15,45.43a12.32,12.32,0,0,0-6.85,11A12.19,12.19,0,0,0,8.27,58.26ZM15,31.44A35.54,35.54,0,0,0,2.36,36.87,36,36,0,0,1,8.27,18.61,12.13,12.13,0,0,0,15,31.44Zm5.45-.69A10.32,10.32,0,1,1,30.75,20.43,10.33,10.33,0,0,1,20.43,30.75Zm11.05-5a34.22,34.22,0,0,0,3.39,9.08,34.44,34.44,0,0,0-9.09-3.38A12.35,12.35,0,0,0,31.48,25.79Zm-11,20.33A10.33,10.33,0,1,1,10.11,56.44,10.33,10.33,0,0,1,20.43,46.12Zm5.35-.73A34.38,34.38,0,0,0,34.9,42a34.38,34.38,0,0,0-3.41,9.12A12.35,12.35,0,0,0,25.78,45.39Zm-5.52-1.61c-7.33,0-13.69-3.64-16.27-5.34,2.57-1.71,8.92-5.34,16.27-5.34S34,36.73,36.53,38.44C34,40.14,27.59,43.78,20.26,43.78ZM31.44,15a12.31,12.31,0,0,0-11-6.86,12.19,12.19,0,0,0-1.82.15A36,36,0,0,1,36.9,2.36,35.2,35.2,0,0,0,31.44,15ZM2.32,19A16.65,16.65,0,0,1,19,2.32h6.3A38.56,38.56,0,0,0,2.32,25.25ZM19,74.55A16.65,16.65,0,0,1,2.32,57.92V51.63A38.57,38.57,0,0,0,25.25,74.55Zm-.34-6a12.19,12.19,0,0,0,1.82.15,12.32,12.32,0,0,0,11-6.85,35.32,35.32,0,0,0,5.41,12.61A36,36,0,0,1,18.61,68.6Zm14.48-12c0-7.32,3.64-13.69,5.35-16.27,1.7,2.58,5.34,9,5.34,16.27s-3.64,13.7-5.34,16.28C36.73,70.34,33.09,64,33.09,56.64Zm12.35,5.27A12.13,12.13,0,0,0,58.26,68.6,36,36,0,0,1,40,74.51,35.49,35.49,0,0,0,45.44,61.91Zm29.11-4A16.65,16.65,0,0,1,57.92,74.55h-6.3A38.57,38.57,0,0,0,74.55,51.63Zm0-32.67A38.56,38.56,0,0,0,51.62,2.32h6.3A16.65,16.65,0,0,1,74.55,19Z"/></svg>
+      <span class="login-logo-text">San Francisco<br>Human Services Agency</span>
+    </div>
+    <div class="login-app-name">Intake Form Assistant</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Enter username" autofocus>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password">
+    </div>
+    <button class="btn-primary" id="btn-login" onclick="doLogin()" disabled>Sign In</button>
+  </div>
+</div>
+
+<div class="app-wrap" id="app-wrap">
 <header>
   <div class="header-left">
     <a class="sfhsa-logo" href="#">
@@ -624,7 +654,7 @@
   <div class="lookup-bar" id="lookup-bar">
     <div class="form-group narrow">
       <label>First Name <span class="required">*</span></label>
-      <input type="text" id="input-first" placeholder="First name" autofocus>
+      <input type="text" id="input-first" placeholder="First name">
     </div>
     <div class="form-group narrow">
       <label>Last Name <span class="required">*</span></label>
@@ -771,15 +801,15 @@
       </div>
       <div class="form-group">
         <label>Sexual Orientation</label>
-        <select id="pf-orientation">
-          <option value="">Select...</option>
+        <select id="pf-orientation" class="prefilled">
+          <option>Straight/Heterosexual</option>
           <option>Bisexual</option>
           <option>Gay/Lesbian/Same-Gender Loving</option>
           <option>Questioning/Unsure</option>
-          <option>Straight/Heterosexual</option>
           <option>Not Listed</option>
           <option>Decline to answer</option>
         </select>
+        <span class="source-tag">Source: Medi-Cal</span>
       </div>
     </div>
 
@@ -827,101 +857,11 @@
               <label class="check-label"><input type="checkbox" name="income-source" value="veterans"> Veteran's Benefits</label>
               <label class="check-label"><input type="checkbox" name="income-source" value="public" checked> Public Benefits (Medi-Cal)</label>
               <label class="check-label"><input type="checkbox" name="income-source" value="rental"> Rental Assistance</label>
-              <label class="check-label"><input type="checkbox" name="income-source" value="self"> Self-Certified</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="self" id="chk-self-cert"> Self-Certified</label>
+              <input type="text" id="self-cert-explain" placeholder="Please explain..." disabled style="margin-top:6px; padding:8px 12px; border:1px solid #c2c2c2; border-radius:6px; font-size:13px; font-family:inherit; width:100%; color:#212123; background:#f5f5f5;">
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Employment & Work Readiness -->
-    <div class="panel">
-      <div class="panel-header">
-        <h2>Employment &amp; Work Readiness</h2>
-        <span class="badge badge-manual">Staff Entry</span>
-      </div>
-      <div class="info-banner">
-        <span class="banner-icon">&#9432;</span>
-        <span>Complete this section during the applicant interview.</span>
-      </div>
-      <div class="form-group">
-        <label>Current Employment Status <span class="required">*</span></label>
-        <select id="emp-status">
-          <option value="">Select...</option>
-          <option>Unemployed - seeking work</option>
-          <option>Unemployed - not seeking work</option>
-          <option>Employed part-time (&lt;80 hrs/month)</option>
-          <option>Employed part-time (&ge;80 hrs/month)</option>
-          <option>Employed full-time</option>
-          <option>Self-employed</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Highest Education Level</label>
-        <select id="emp-education">
-          <option value="">Select...</option>
-          <option>No high school diploma</option>
-          <option>High school diploma / GED</option>
-          <option>Some college</option>
-          <option>Associate degree</option>
-          <option>Bachelor's degree</option>
-          <option>Graduate degree</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Work Experience (most recent role)</label>
-        <input type="text" id="emp-experience" placeholder="e.g. Retail associate, 2 years">
-      </div>
-      <div class="form-group">
-        <label>Barriers to Employment</label>
-        <select id="emp-barriers">
-          <option value="">None identified</option>
-          <option>Childcare</option>
-          <option>Transportation</option>
-          <option>Housing instability</option>
-          <option>Language</option>
-          <option>Disability or health condition</option>
-          <option>Justice-system involvement</option>
-          <option>Multiple barriers</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Program Referral -->
-    <div class="panel">
-      <div class="panel-header">
-        <h2>Program Referral</h2>
-        <span class="badge badge-action">Action</span>
-      </div>
-      <p style="font-size:13px; color:#5a7a92; margin-bottom:14px;">Select the workforce program for this referral.</p>
-
-      <label class="program-option" id="opt-jobsnow" onclick="selectProgram('jobsnow')">
-        <input type="radio" name="program" value="jobsnow">
-        <div>
-          <div class="program-name">JobsNOW!</div>
-          <div class="program-desc">Free employment program matching job seekers with employers. Subsidized employment and job placement services.</div>
-        </div>
-      </label>
-
-      <label class="program-option" id="opt-pst" onclick="selectProgram('pst')">
-        <input type="radio" name="program" value="pst">
-        <div>
-          <div class="program-name">Public Service Trainee (PST)</div>
-          <div class="program-desc">Temporary, paid training positions in city departments to prepare residents for full-time work.</div>
-        </div>
-      </label>
-
-      <label class="program-option" id="opt-other" onclick="selectProgram('other')">
-        <input type="radio" name="program" value="other">
-        <div>
-          <div class="program-name">Other / General Assessment</div>
-          <div class="program-desc">Refer for general workforce assessment if specific program fit is unclear.</div>
-        </div>
-      </label>
-
-      <div class="form-group" style="margin-top:14px;">
-        <label>Staff Notes (optional)</label>
-        <textarea id="staff-notes" rows="5" placeholder="Any additional context for the referral..."></textarea>
       </div>
     </div>
 
@@ -931,53 +871,32 @@
         <h2>Applicant Confirmation &amp; Signature</h2>
       </div>
 
-      <div class="warn-banner">
-        <span class="banner-icon">&#9888;</span>
-        <span>Hand the device to the applicant or have them sign on the signature pad.</span>
+      <div class="info-banner" style="margin-bottom:16px;">
+        <span class="banner-icon">&#9998;</span>
+        <span>By signing below, I acknowledge the information provided is true and correct and consent to sharing it for workforce services enrollment.</span>
       </div>
 
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <div>
-          <p style="font-size:13px; color:#5a7a92; margin-bottom:12px;">By signing, the applicant acknowledges the information provided is true and correct and authorizes referral to the selected program.</p>
-
-          <div class="signature-area" id="sig-area">
-            <canvas id="sig-canvas"></canvas>
-            <div class="placeholder" id="sig-placeholder">
-              <div class="big">&#9997;</div>
-              Sign here
-            </div>
-          </div>
-          <div class="sig-actions">
-            <button class="btn-secondary" onclick="clearSignature()">Clear</button>
-          </div>
-        </div>
-
-        <div>
-          <div class="checkbox-row" style="margin-bottom:14px;">
-            <input type="checkbox" id="confirm-reviewed">
-            <label for="confirm-reviewed">I have reviewed all prefilled and entered fields with the applicant and confirmed they are accurate.</label>
-          </div>
-          <div class="checkbox-row">
-            <input type="checkbox" id="confirm-consent">
-            <label for="confirm-consent">The applicant consents to sharing their information with the selected workforce program.</label>
-          </div>
+      <div class="signature-area" id="sig-area">
+        <canvas id="sig-canvas"></canvas>
+        <div class="placeholder" id="sig-placeholder">
+          <div class="big">&#9997;</div>
+          Sign here
         </div>
       </div>
+      <div class="sig-actions">
+        <button class="btn-secondary" onclick="clearSignature()">Clear</button>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="panel full-width" style="text-align:center; padding:20px 24px;">
+      <button class="btn-success" id="btn-submit" onclick="submitIntake()" disabled style="width:100%; max-width:360px;">Submit Intake</button>
     </div>
   </div>
 
-  <!-- Submit bar -->
-  <div class="submit-bar" id="submit-bar">
-    <div class="checklist">
-      <div class="check-item" id="chk-lookup"><span class="dot"></span> Applicant found</div>
-      <div class="check-item" id="chk-program"><span class="dot"></span> Program selected</div>
-      <div class="check-item" id="chk-sig"><span class="dot"></span> Signature captured</div>
-      <div class="check-item" id="chk-confirm"><span class="dot"></span> Staff confirmed</div>
-    </div>
-    <button class="btn-success" id="btn-submit" onclick="submitIntake()" disabled>Submit Intake</button>
-  </div>
 
 </div>
+</div><!-- end app-wrap -->
 
 <!-- Completion overlay -->
 <div class="completion-overlay" id="completion-overlay">
@@ -990,7 +909,7 @@
     <h3 style="font-size:14px; font-weight:600; margin-bottom:8px; text-align:left;">Next Steps</h3>
     <ul class="next-steps">
       <li><span class="num">1</span> Eligibility determination will be processed</li>
-      <li><span class="num">2</span> Applicant will be contacted for program enrollment</li>
+      <li><span class="num">2</span> Applicant will be contacted for workforce services enrollment</li>
       <li><span class="num">3</span> H.R. 1 work requirement compliance tracked automatically</li>
     </ul>
     <button class="btn-primary" style="width:100%;" onclick="startNew()">Start New Intake</button>
@@ -998,10 +917,35 @@
 </div>
 
 <script>
+  // --- Login ---
+  function checkLoginReady() {
+    const ready = document.getElementById('login-user').value.trim() &&
+                  document.getElementById('login-pass').value;
+    document.getElementById('btn-login').disabled = !ready;
+    return ready;
+  }
+
+  document.querySelectorAll('#login-user, #login-pass').forEach(el => {
+    el.addEventListener('input', checkLoginReady);
+  });
+
+  document.querySelectorAll('#login-user, #login-pass').forEach(el => {
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); if (checkLoginReady()) doLogin(); }
+    });
+  });
+
+  function doLogin() {
+    const user = document.getElementById('login-user').value.trim();
+    document.querySelector('.staff-badge').textContent = user + ' \u00B7 Downtown Office';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-wrap').classList.add('visible');
+    document.getElementById('input-first').focus();
+  }
+
   const originalValues = {};
   let hasSigned = false;
   let canvas, ctx, drawing = false;
-  let programSelected = false;
   const PREFILLED_COUNT = 16;
   const DATA_SOURCES = 1;
 
@@ -1076,14 +1020,12 @@
 
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('panel-grid').classList.add('visible');
-    document.getElementById('submit-bar').classList.add('visible');
     document.getElementById('metrics').style.display = 'flex';
 
     document.getElementById('metric-prefilled').textContent = PREFILLED_COUNT;
     document.getElementById('metric-sources').textContent = DATA_SOURCES;
     document.getElementById('metric-changed').textContent = '0';
 
-    markCheck('chk-lookup', true);
     requestAnimationFrame(initCanvas);
   }
 
@@ -1128,14 +1070,22 @@
   document.getElementById('pf-famsize').addEventListener('input', calcIncomeLevel);
   document.getElementById('pf-income').addEventListener('input', calcIncomeLevel);
 
-  // Program selection
-  function selectProgram(value) {
-    document.querySelectorAll('.program-option').forEach(el => el.classList.remove('selected'));
-    document.getElementById('opt-' + value).classList.add('selected');
-    programSelected = true;
-    markCheck('chk-program', true);
-    checkReady();
-  }
+  // Toggle self-certified explanation field
+  document.getElementById('chk-self-cert').addEventListener('change', function() {
+    const el = document.getElementById('self-cert-explain');
+    el.disabled = !this.checked;
+    el.style.background = this.checked ? '#fff' : '#f5f5f5';
+    if (!this.checked) el.value = '';
+  });
+
+  // Format income as currency on blur
+  document.getElementById('pf-income').addEventListener('blur', function() {
+    const raw = this.value.replace(/[^0-9]/g, '');
+    if (raw) this.value = '$' + parseInt(raw, 10).toLocaleString('en-US');
+  });
+  document.getElementById('pf-income').addEventListener('focus', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
 
   // Signature canvas
   function sizeCanvas() {
@@ -1190,7 +1140,6 @@
     ctx.stroke();
     if (!hasSigned) {
       hasSigned = true;
-      markCheck('chk-sig', true);
       checkReady();
     }
   }
@@ -1202,36 +1151,20 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById('sig-placeholder').style.display = 'block';
     hasSigned = false;
-    markCheck('chk-sig', false);
     checkReady();
   }
 
-  // Confirmation checkboxes
-  document.getElementById('confirm-reviewed').addEventListener('change', checkReady);
-  document.getElementById('confirm-consent').addEventListener('change', checkReady);
-
   // Readiness
-  function markCheck(id, done) {
-    const el = document.getElementById(id);
-    if (done) el.classList.add('done');
-    else el.classList.remove('done');
-  }
-
   function checkReady() {
-    const reviewed = document.getElementById('confirm-reviewed').checked;
-    const consent = document.getElementById('confirm-consent').checked;
-    markCheck('chk-confirm', reviewed && consent);
-    document.getElementById('btn-submit').disabled = !(hasSigned && programSelected && reviewed && consent);
+    document.getElementById('btn-submit').disabled = !hasSigned;
   }
 
   // Submit
   function submitIntake() {
     const first = document.getElementById('pf-first').value;
     const last = document.getElementById('pf-last').value;
-    const program = document.querySelector('input[name="program"]:checked');
-    const programName = program ? program.closest('.program-option').querySelector('.program-name').textContent : '';
 
-    document.getElementById('sum-line').textContent = first + ' ' + last + ' \u2014 ' + programName + ' referral';
+    document.getElementById('sum-line').textContent = first + ' ' + last + ' \u2014 Workforce Services Intake';
 
     const now = new Date();
     document.getElementById('sum-time').textContent =
@@ -1244,20 +1177,12 @@
     document.getElementById('input-first').value = '';
     document.getElementById('input-last').value = '';
     document.getElementById('input-dob').value = '';
-    document.getElementById('confirm-reviewed').checked = false;
-    document.getElementById('confirm-consent').checked = false;
-    document.querySelectorAll('.program-option').forEach(el => el.classList.remove('selected'));
-    document.querySelectorAll('input[name="program"]').forEach(el => el.checked = false);
-    document.getElementById('staff-notes').value = '';
-    document.getElementById('emp-status').value = '';
-    document.getElementById('emp-education').value = '';
-    document.getElementById('emp-experience').value = '';
-    document.getElementById('emp-barriers').value = '';
     document.getElementById('pf-email').value = '';
-    document.getElementById('pf-orientation').value = '';
     document.querySelectorAll('input[name="race"]').forEach(el => el.checked = false);
     document.querySelectorAll('input[name="income-source"]').forEach(el => el.checked = false);
-    programSelected = false;
+    document.getElementById('self-cert-explain').value = '';
+    document.getElementById('self-cert-explain').disabled = true;
+    document.getElementById('self-cert-explain').style.background = '#f5f5f5';
     hasSigned = false;
 
     // Clear edited state on all prefilled fields
@@ -1268,12 +1193,10 @@
     });
 
     document.getElementById('panel-grid').classList.remove('visible');
-    document.getElementById('submit-bar').classList.remove('visible');
     document.getElementById('metrics').style.display = 'none';
     document.getElementById('empty-state').style.display = 'block';
     document.getElementById('completion-overlay').classList.remove('visible');
 
-    ['chk-lookup','chk-program','chk-sig','chk-confirm'].forEach(id => markCheck(id, false));
     document.getElementById('btn-submit').disabled = true;
   }
 </script>
