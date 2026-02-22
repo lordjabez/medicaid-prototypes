@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake Form Assistant — SF Human Services Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: #f5f5f5;
+    color: #1b1b1b;
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* --- Header --- */
+  header {
+    background: #fff;
+    border-bottom: 3px solid #037493;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sfhsa-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #0f2549;
+  }
+
+  .sfhsa-logo svg { height: 44px; width: 44px; }
+
+  .sfhsa-logo .logo-text {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #0f2549;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 32px;
+    background: #e2e2e2;
+    margin: 0 8px;
+  }
+
+  .app-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #037493;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    color: #454540;
+  }
+
+  .staff-badge {
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #454540;
+  }
+
+  /* --- Sub-header --- */
+  .sub-header {
+    background: #fff;
+    border-bottom: 1px solid #e2e2e2;
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sub-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0f2549;
+  }
+
+  .metrics {
+    display: flex;
+    gap: 24px;
+  }
+
+  .metric { text-align: center; }
+
+  .metric .number {
+    font-size: 20px;
+    font-weight: 600;
+    color: #037493;
+  }
+
+  .metric .label {
+    font-size: 11px;
+    color: #71767a;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* --- Layout --- */
+  .page {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 24px;
+  }
+
+  /* --- Lookup bar --- */
+  .lookup-bar {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 160px 160px 160px auto;
+    align-items: end;
+    gap: 16px;
+  }
+
+  .lookup-bar .form-group { margin-bottom: 0; }
+
+  /* --- Panels --- */
+  .panel-grid {
+    display: none;
+    gap: 20px;
+  }
+
+  .panel-grid.visible {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .panel.full-width { grid-column: 1 / -1; }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
+  }
+
+  .panel-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f2549;
+  }
+
+  .panel-header .badge {
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .badge-prefilled { background: #e7f6f8; color: #037493; }
+  .badge-manual { background: #f0f0f0; color: #454540; }
+  .badge-action { background: #fef2e4; color: #b55a00; }
+
+  /* --- Form elements --- */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #454540;
+    margin-bottom: 4px;
+  }
+
+  .required { color: #b50909; }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 9px 12px;
+    border: 1px solid #c2c2c2;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #212123;
+    background: #fff;
+    transition: border-color 0.15s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #0d7ea2;
+    box-shadow: 0 0 0 3px rgba(3,116,147,0.12);
+  }
+
+  .form-group input.prefilled,
+  .form-group select.prefilled {
+    background: #e7f6f8;
+    border-color: #97d4e9;
+  }
+
+  .form-group input.prefilled.locked,
+  .form-group select.prefilled.locked {
+    background: #eff3f4;
+    border-color: #d9dfe0;
+    color: #71767a;
+    cursor: not-allowed;
+  }
+
+  .form-group input.prefilled.edited,
+  .form-group select.prefilled.edited {
+    background: #fef2e4;
+    border-color: #f9c642;
+  }
+
+  .source-tag {
+    font-size: 11px;
+    color: #037493;
+    margin-top: 2px;
+  }
+
+  .source-tag.edited { color: #b55a00; }
+
+  .reset-link {
+    color: #0d7ea2;
+    cursor: pointer;
+    text-decoration: underline;
+    border: none;
+    background: none;
+    font: inherit;
+    padding: 0;
+  }
+
+  .reset-link:hover { color: #07648d; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .form-row .form-group { margin-bottom: 0; }
+
+  /* --- Buttons --- */
+  button {
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, opacity 0.15s;
+  }
+
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .btn-primary { background: #0d7ea2; color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #07648d; }
+
+  .btn-secondary { background: #fff; color: #454540; border: 1px solid #c2c2c2; }
+  .btn-secondary:hover:not(:disabled) { background: #f5f5f5; }
+
+  .btn-success { background: #037493; color: #fff; padding: 12px 32px; font-size: 15px; font-weight: 600; }
+  .btn-success:hover:not(:disabled) { background: #0f2549; }
+
+  /* --- Banners --- */
+  .info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #e7f6f8;
+    border: 1px solid #97d4e9;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #0f2549;
+    line-height: 1.4;
+  }
+
+  .warn-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f8f1df;
+    border: 1px solid #f9e3a3;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #854d0e;
+    line-height: 1.4;
+  }
+
+  .banner-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* --- Checkbox --- */
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .checkbox-row input[type="checkbox"] {
+    margin-top: 4px;
+    width: 16px;
+    height: 16px;
+    accent-color: #0d7ea2;
+    flex-shrink: 0;
+  }
+
+  /* --- Signature --- */
+  .signature-area {
+    border: 2px dashed #c2c2c2;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    height: 160px;
+    margin-bottom: 12px;
+  }
+
+  .signature-area canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: 6px;
+    cursor: crosshair;
+  }
+
+  .signature-area .placeholder {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #a1a1a1;
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .signature-area .placeholder .big { font-size: 32px; margin-bottom: 4px; }
+
+  .sig-actions { display: flex; gap: 8px; margin-bottom: 16px; }
+  .sig-actions button { font-size: 12px; padding: 6px 14px; }
+
+  /* --- Program cards --- */
+  .program-option {
+    border: 2px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .program-option:hover { border-color: #97d4e9; background: #e7f6f8; }
+  .program-option.selected { border-color: #037493; background: #e7f6f8; }
+
+  .program-option input[type="radio"] {
+    margin-top: 3px;
+    accent-color: #0d7ea2;
+    flex-shrink: 0;
+  }
+
+  .program-option .program-name { font-weight: 600; font-size: 14px; color: #0f2549; }
+  .program-option .program-desc { font-size: 13px; color: #71767a; margin-top: 2px; }
+
+  /* --- Submit bar --- */
+  .submit-bar {
+    display: none;
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .submit-bar.visible { display: flex; }
+
+  .submit-bar .checklist { display: flex; gap: 20px; font-size: 13px; color: #71767a; }
+  .submit-bar .check-item { display: flex; align-items: center; gap: 6px; }
+  .check-item .dot { width: 8px; height: 8px; border-radius: 50%; background: #c2c2c2; }
+  .check-item.done .dot { background: #037493; }
+  .check-item.done { color: #037493; }
+
+  /* --- Completion overlay --- */
+  .completion-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,37,73,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .completion-overlay.visible { display: flex; }
+
+  .completion-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px 48px;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+
+  .completion-icon {
+    width: 72px; height: 72px;
+    background: #e7f6f8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 16px;
+  }
+
+  .completion-card h2 { font-size: 22px; font-weight: 600; color: #0f2549; margin-bottom: 8px; }
+  .completion-card p { color: #71767a; font-size: 14px; margin-bottom: 6px; }
+  .completion-card .detail { font-size: 13px; color: #71767a; margin-bottom: 24px; }
+
+  .next-steps { list-style: none; text-align: left; margin: 16px 0 24px; }
+
+  .next-steps li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eff3f4;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #424244;
+  }
+
+  .next-steps li .num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #e7f6f8;
+    color: #0f2549;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* --- Empty state --- */
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: #71767a;
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+  .empty-state p { font-size: 15px; max-width: 360px; margin: 0 auto; }
+
+  hr { border: none; border-top: 1px solid #eff3f4; margin: 16px 0; }
+
+  /* --- Responsive: tablet and below --- */
+  @media (max-width: 1024px) {
+    header { padding: 0 16px; height: auto; min-height: 56px; flex-wrap: wrap; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+    .sfhsa-logo svg { height: 36px; width: 36px; }
+    .sfhsa-logo .logo-text { font-size: 11px; }
+    .header-divider { display: none; }
+    .app-name { display: none; }
+    .header-right { font-size: 12px; }
+
+    .sub-header { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 16px; }
+    .metrics { gap: 16px; }
+
+    .page { padding: 0 12px; margin: 16px auto; }
+
+    .lookup-bar {
+      grid-template-columns: 1fr 1fr;
+      padding: 16px;
+    }
+    .lookup-bar .form-group:nth-child(3) { grid-column: 1 / -1; }
+    .lookup-bar button { grid-column: 1 / -1; }
+
+    .panel-grid.visible { grid-template-columns: 1fr; }
+    .panel { padding: 20px 16px; }
+
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .form-row .form-group { margin-bottom: 14px; }
+
+    /* Signature section: stack vertically */
+    .panel.full-width div[style*="grid-template-columns: 1fr 1fr"] {
+      display: block !important;
+    }
+    .panel.full-width div[style*="grid-template-columns: 1fr 1fr"] > div {
+      margin-bottom: 16px;
+    }
+
+    .submit-bar { flex-direction: column; gap: 14px; align-items: stretch; padding: 16px; }
+    .submit-bar .checklist { flex-wrap: wrap; gap: 10px; }
+    .submit-bar .btn-success { text-align: center; }
+
+    .completion-card { padding: 28px 24px; margin: 16px; }
+  }
+
+  /* --- Responsive: small phones --- */
+  @media (max-width: 420px) {
+    .lookup-bar { grid-template-columns: 1fr; }
+    .lookup-bar .form-group:nth-child(3) { grid-column: auto; }
+    .lookup-bar button { grid-column: auto; }
+
+    .metrics .metric .number { font-size: 16px; }
+    .metrics .metric .label { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a class="sfhsa-logo" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 77 77"><defs><style>.li{fill:#037493;}</style></defs><path class="li" d="M57.92,0H19A18.94,18.94,0,0,0,0,19v39A18.94,18.94,0,0,0,19,77h39A18.94,18.94,0,0,0,77,58V19A18.94,18.94,0,0,0,57.92,0ZM68.6,18.61a36,36,0,0,1,5.91,18.26,35.54,35.54,0,0,0-12.62-5.43A12.13,12.13,0,0,0,68.6,18.61ZM61.9,45.43A35.37,35.37,0,0,0,74.51,40,36,36,0,0,1,68.6,58.26a12.19,12.19,0,0,0,.15-1.82A12.32,12.32,0,0,0,61.9,45.43ZM56.62,33.1c7.32,0,13.68,3.63,16.26,5.34-2.58,1.7-8.94,5.34-16.26,5.34s-13.68-3.64-16.26-5.34C42.94,36.73,49.3,33.1,56.62,33.1ZM42,34.89a34,34,0,0,0,3.4-9.1,12.37,12.37,0,0,0,5.71,5.7A34,34,0,0,0,42,34.89Zm9.1,10.49a12.37,12.37,0,0,0-5.71,5.72A34.18,34.18,0,0,0,42,42,34,34,0,0,0,51.09,45.38Zm5.35.74A10.32,10.32,0,1,1,46.12,56.44,10.33,10.33,0,0,1,56.44,46.12Zm0-15.37A10.32,10.32,0,1,1,66.76,20.43,10.33,10.33,0,0,1,56.44,30.75Zm0-22.63a12.3,12.3,0,0,0-11,6.86A35.41,35.41,0,0,0,40,2.36,36,36,0,0,1,58.26,8.27,12.19,12.19,0,0,0,56.44,8.12ZM43.78,20.28c0,7.32-3.64,13.68-5.34,16.26C36.73,34,33.09,27.6,33.09,20.28S36.73,6.6,38.44,4C40.14,6.6,43.78,13,43.78,20.28Zm-35.51,38A36,36,0,0,1,2.36,40,35.56,35.56,0,0,0,15,45.43a12.32,12.32,0,0,0-6.85,11A12.19,12.19,0,0,0,8.27,58.26ZM15,31.44A35.54,35.54,0,0,0,2.36,36.87,36,36,0,0,1,8.27,18.61,12.13,12.13,0,0,0,15,31.44Zm5.45-.69A10.32,10.32,0,1,1,30.75,20.43,10.33,10.33,0,0,1,20.43,30.75Zm11.05-5a34.22,34.22,0,0,0,3.39,9.08,34.44,34.44,0,0,0-9.09-3.38A12.35,12.35,0,0,0,31.48,25.79Zm-11,20.33A10.33,10.33,0,1,1,10.11,56.44,10.33,10.33,0,0,1,20.43,46.12Zm5.35-.73A34.38,34.38,0,0,0,34.9,42a34.38,34.38,0,0,0-3.41,9.12A12.35,12.35,0,0,0,25.78,45.39Zm-5.52-1.61c-7.33,0-13.69-3.64-16.27-5.34,2.57-1.71,8.92-5.34,16.27-5.34S34,36.73,36.53,38.44C34,40.14,27.59,43.78,20.26,43.78ZM31.44,15a12.31,12.31,0,0,0-11-6.86,12.19,12.19,0,0,0-1.82.15A36,36,0,0,1,36.9,2.36,35.2,35.2,0,0,0,31.44,15ZM2.32,19A16.65,16.65,0,0,1,19,2.32h6.3A38.56,38.56,0,0,0,2.32,25.25ZM19,74.55A16.65,16.65,0,0,1,2.32,57.92V51.63A38.57,38.57,0,0,0,25.25,74.55Zm-.34-6a12.19,12.19,0,0,0,1.82.15,12.32,12.32,0,0,0,11-6.85,35.32,35.32,0,0,0,5.41,12.61A36,36,0,0,1,18.61,68.6Zm14.48-12c0-7.32,3.64-13.69,5.35-16.27,1.7,2.58,5.34,9,5.34,16.27s-3.64,13.7-5.34,16.28C36.73,70.34,33.09,64,33.09,56.64Zm12.35,5.27A12.13,12.13,0,0,0,58.26,68.6,36,36,0,0,1,40,74.51,35.49,35.49,0,0,0,45.44,61.91Zm29.11-4A16.65,16.65,0,0,1,57.92,74.55h-6.3A38.57,38.57,0,0,0,74.55,51.63Zm0-32.67A38.56,38.56,0,0,0,51.62,2.32h6.3A16.65,16.65,0,0,1,74.55,19Z"/></svg>
+      <span class="logo-text">San Francisco<br>Human Services Agency</span>
+    </a>
+    <div class="header-divider"></div>
+    <span class="app-name">Intake Form Assistant</span>
+  </div>
+  <div class="header-right">
+    <span class="staff-badge">J. Smith &middot; Downtown Office</span>
+  </div>
+</header>
+
+<div class="sub-header">
+  <h1>New Intake</h1>
+  <div class="metrics" id="metrics" style="display:none;">
+    <div class="metric">
+      <div class="number" id="metric-prefilled">0</div>
+      <div class="label">Fields prefilled</div>
+    </div>
+    <div class="metric">
+      <div class="number" id="metric-sources">0</div>
+      <div class="label">Data sources</div>
+    </div>
+    <div class="metric">
+      <div class="number" id="metric-changed">0</div>
+      <div class="label">Fields corrected</div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Lookup bar -->
+  <div class="lookup-bar" id="lookup-bar">
+    <div class="form-group narrow">
+      <label>First Name <span class="required">*</span></label>
+      <input type="text" id="input-first" placeholder="First name">
+    </div>
+    <div class="form-group narrow">
+      <label>Last Name <span class="required">*</span></label>
+      <input type="text" id="input-last" placeholder="Last name">
+    </div>
+    <div class="form-group">
+      <label>Date of Birth <span class="required">*</span></label>
+      <input type="date" id="input-dob">
+    </div>
+    <button class="btn-primary" onclick="lookupApplicant()">Look Up</button>
+  </div>
+
+  <!-- Empty state before lookup -->
+  <div class="empty-state" id="empty-state">
+    <div class="icon">&#128269;</div>
+    <p>Enter the applicant's name and date of birth above to pull their information and begin the intake.</p>
+  </div>
+
+  <!-- All panels shown after lookup -->
+  <div class="panel-grid" id="panel-grid">
+
+    <!-- Personal Information -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Personal Information</h2>
+        <span class="badge badge-prefilled">Prefilled</span>
+      </div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="pf-first" class="prefilled locked" value="" readonly>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="pf-last" class="prefilled locked" value="" readonly>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Date of Birth</label>
+        <input type="text" id="pf-dob" class="prefilled locked" value="" readonly>
+        <span class="source-tag">Source: Medi-Cal</span>
+      </div>
+      <div class="form-group">
+        <label>Street Address</label>
+        <input type="text" id="pf-address" class="prefilled" value="1234 Oak Street, Apt 5B, San Francisco, CA 94110">
+        <span class="source-tag">Source: Medi-Cal</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="pf-phone" class="prefilled" value="(415) 555-0147">
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+        <div class="form-group">
+          <label>Preferred Language</label>
+          <select id="pf-language" class="prefilled">
+            <option>Spanish</option>
+            <option>English</option>
+            <option>Mandarin</option>
+            <option>Cantonese</option>
+            <option>Vietnamese</option>
+            <option>Tagalog</option>
+            <option>Russian</option>
+            <option>Other</option>
+          </select>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demographics & Eligibility -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Demographics &amp; Eligibility</h2>
+        <span class="badge badge-prefilled">Prefilled</span>
+      </div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>Race</label>
+          <select id="pf-race" class="prefilled">
+            <option>Hispanic or Latino</option>
+            <option>White</option>
+            <option>Black or African American</option>
+            <option>Asian</option>
+            <option>Native Hawaiian or Pacific Islander</option>
+            <option>American Indian or Alaska Native</option>
+            <option>Two or More Races</option>
+            <option>Prefer not to say</option>
+          </select>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+        <div class="form-group">
+          <label>Gender Identity</label>
+          <select id="pf-gender" class="prefilled">
+            <option>Female</option>
+            <option>Male</option>
+            <option>Non-binary</option>
+            <option>Transgender Female</option>
+            <option>Transgender Male</option>
+            <option>Other</option>
+            <option>Prefer not to say</option>
+          </select>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>Family Size</label>
+          <input type="number" id="pf-famsize" class="prefilled" value="4" min="1">
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+        <div class="form-group">
+          <label>Annual Household Income</label>
+          <input type="text" id="pf-income" class="prefilled" value="$32,400">
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Income Certification</label>
+        <input type="text" id="pf-cert" class="prefilled locked" value="Verified via Medi-Cal enrollment" readonly>
+        <span class="source-tag">Source: Medi-Cal (auto-certified)</span>
+      </div>
+    </div>
+
+    <!-- Employment & Work Readiness -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Employment &amp; Work Readiness</h2>
+        <span class="badge badge-manual">Staff Entry</span>
+      </div>
+      <div class="info-banner">
+        <span class="banner-icon">&#9432;</span>
+        <span>Complete this section during the applicant interview.</span>
+      </div>
+      <div class="form-group">
+        <label>Current Employment Status <span class="required">*</span></label>
+        <select id="emp-status">
+          <option value="">Select...</option>
+          <option>Unemployed - seeking work</option>
+          <option>Unemployed - not seeking work</option>
+          <option>Employed part-time (&lt;80 hrs/month)</option>
+          <option>Employed part-time (&ge;80 hrs/month)</option>
+          <option>Employed full-time</option>
+          <option>Self-employed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Highest Education Level</label>
+        <select id="emp-education">
+          <option value="">Select...</option>
+          <option>No high school diploma</option>
+          <option>High school diploma / GED</option>
+          <option>Some college</option>
+          <option>Associate degree</option>
+          <option>Bachelor's degree</option>
+          <option>Graduate degree</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Work Experience (most recent role)</label>
+        <input type="text" id="emp-experience" placeholder="e.g. Retail associate, 2 years">
+      </div>
+      <div class="form-group">
+        <label>Barriers to Employment</label>
+        <select id="emp-barriers">
+          <option value="">None identified</option>
+          <option>Childcare</option>
+          <option>Transportation</option>
+          <option>Housing instability</option>
+          <option>Language</option>
+          <option>Disability or health condition</option>
+          <option>Justice-system involvement</option>
+          <option>Multiple barriers</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Program Referral -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Program Referral</h2>
+        <span class="badge badge-action">Action</span>
+      </div>
+      <p style="font-size:13px; color:#5a7a92; margin-bottom:14px;">Select the workforce program for this referral.</p>
+
+      <label class="program-option" id="opt-jobsnow" onclick="selectProgram('jobsnow')">
+        <input type="radio" name="program" value="jobsnow">
+        <div>
+          <div class="program-name">JobsNOW!</div>
+          <div class="program-desc">Free employment program matching job seekers with employers. Subsidized employment and job placement services.</div>
+        </div>
+      </label>
+
+      <label class="program-option" id="opt-pst" onclick="selectProgram('pst')">
+        <input type="radio" name="program" value="pst">
+        <div>
+          <div class="program-name">Public Service Trainee (PST)</div>
+          <div class="program-desc">Temporary, paid training positions in city departments to prepare residents for full-time work.</div>
+        </div>
+      </label>
+
+      <label class="program-option" id="opt-other" onclick="selectProgram('other')">
+        <input type="radio" name="program" value="other">
+        <div>
+          <div class="program-name">Other / General Assessment</div>
+          <div class="program-desc">Refer for general workforce assessment if specific program fit is unclear.</div>
+        </div>
+      </label>
+
+      <div class="form-group" style="margin-top:14px;">
+        <label>Staff Notes (optional)</label>
+        <textarea id="staff-notes" rows="5" placeholder="Any additional context for the referral..."></textarea>
+      </div>
+    </div>
+
+    <!-- Signature & Confirmation (full width) -->
+    <div class="panel full-width">
+      <div class="panel-header">
+        <h2>Applicant Confirmation &amp; Signature</h2>
+      </div>
+
+      <div class="warn-banner">
+        <span class="banner-icon">&#9888;</span>
+        <span>Hand the device to the applicant or have them sign on the signature pad.</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div>
+          <p style="font-size:13px; color:#5a7a92; margin-bottom:12px;">By signing, the applicant acknowledges the information provided is true and correct and authorizes referral to the selected program.</p>
+
+          <div class="signature-area" id="sig-area">
+            <canvas id="sig-canvas"></canvas>
+            <div class="placeholder" id="sig-placeholder">
+              <div class="big">&#9997;</div>
+              Sign here
+            </div>
+          </div>
+          <div class="sig-actions">
+            <button class="btn-secondary" onclick="clearSignature()">Clear</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="checkbox-row" style="margin-bottom:14px;">
+            <input type="checkbox" id="confirm-reviewed">
+            <label for="confirm-reviewed">I have reviewed all prefilled and entered fields with the applicant and confirmed they are accurate.</label>
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="confirm-consent">
+            <label for="confirm-consent">The applicant consents to sharing their information with the selected workforce program.</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit bar -->
+  <div class="submit-bar" id="submit-bar">
+    <div class="checklist">
+      <div class="check-item" id="chk-lookup"><span class="dot"></span> Applicant found</div>
+      <div class="check-item" id="chk-program"><span class="dot"></span> Program selected</div>
+      <div class="check-item" id="chk-sig"><span class="dot"></span> Signature captured</div>
+      <div class="check-item" id="chk-confirm"><span class="dot"></span> Staff confirmed</div>
+    </div>
+    <button class="btn-success" id="btn-submit" onclick="submitIntake()" disabled>Submit Intake</button>
+  </div>
+
+</div>
+
+<!-- Completion overlay -->
+<div class="completion-overlay" id="completion-overlay">
+  <div class="completion-card">
+    <div class="completion-icon">&#10004;</div>
+    <h2>Intake Submitted</h2>
+    <p id="sum-line"></p>
+    <p class="detail" id="sum-time"></p>
+    <hr>
+    <h3 style="font-size:14px; font-weight:600; margin-bottom:8px; text-align:left;">Next Steps</h3>
+    <ul class="next-steps">
+      <li><span class="num">1</span> Eligibility determination will be processed</li>
+      <li><span class="num">2</span> Applicant will be contacted for program enrollment</li>
+      <li><span class="num">3</span> H.R. 1 work requirement compliance tracked automatically</li>
+    </ul>
+    <button class="btn-primary" style="width:100%;" onclick="startNew()">Start New Intake</button>
+  </div>
+</div>
+
+<script>
+  const originalValues = {};
+  let hasSigned = false;
+  let canvas, ctx, drawing = false;
+  let programSelected = false;
+  const PREFILLED_COUNT = 11;
+  const DATA_SOURCES = 1;
+
+  function lookupApplicant() {
+    const first = document.getElementById('input-first').value.trim();
+    const last = document.getElementById('input-last').value.trim();
+    const dob = document.getElementById('input-dob').value;
+
+    if (!first || !last || !dob) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    document.getElementById('pf-first').value = first;
+    document.getElementById('pf-last').value = last;
+
+    // Format DOB as MM/DD/YYYY for the prefilled field
+    const [y, m, d] = dob.split('-');
+    document.getElementById('pf-dob').value = m + '/' + d + '/' + y;
+
+    document.querySelectorAll('.prefilled').forEach(el => {
+      originalValues[el.id] = el.value;
+    });
+
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('panel-grid').classList.add('visible');
+    document.getElementById('submit-bar').classList.add('visible');
+    document.getElementById('metrics').style.display = 'flex';
+
+    document.getElementById('metric-prefilled').textContent = PREFILLED_COUNT;
+    document.getElementById('metric-sources').textContent = DATA_SOURCES;
+    document.getElementById('metric-changed').textContent = '0';
+
+    markCheck('chk-lookup', true);
+    requestAnimationFrame(initCanvas);
+  }
+
+  // Change tracking (only editable prefilled fields)
+  document.querySelectorAll('.prefilled:not(.locked)').forEach(el => {
+    el.addEventListener('input', updateChanged);
+    el.addEventListener('change', updateChanged);
+  });
+
+  function updateChanged() {
+    let changed = 0;
+    document.querySelectorAll('.prefilled:not(.locked)').forEach(el => {
+      const sourceTag = el.parentElement.querySelector('.source-tag');
+      if (originalValues[el.id] !== undefined && el.value !== originalValues[el.id]) {
+        changed++;
+        el.classList.add('edited');
+        if (sourceTag) {
+          sourceTag.classList.add('edited');
+          sourceTag.innerHTML = 'Edited (<a class="reset-link" onclick="resetField(\'' + el.id + '\')">Reset to Medi-Cal source</a>)';
+        }
+      } else {
+        el.classList.remove('edited');
+        if (sourceTag) {
+          sourceTag.classList.remove('edited');
+          sourceTag.textContent = 'Source: Medi-Cal';
+        }
+      }
+    });
+    document.getElementById('metric-changed').textContent = changed;
+  }
+
+  function resetField(fieldId) {
+    const el = document.getElementById(fieldId);
+    if (el && originalValues[fieldId] !== undefined) {
+      el.value = originalValues[fieldId];
+      updateChanged();
+    }
+  }
+
+  // Program selection
+  function selectProgram(value) {
+    document.querySelectorAll('.program-option').forEach(el => el.classList.remove('selected'));
+    document.getElementById('opt-' + value).classList.add('selected');
+    programSelected = true;
+    markCheck('chk-program', true);
+    checkReady();
+  }
+
+  // Signature canvas
+  function initCanvas() {
+    canvas = document.getElementById('sig-canvas');
+    const area = document.getElementById('sig-area');
+    canvas.width = area.offsetWidth;
+    canvas.height = area.offsetHeight;
+    ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#212123';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDraw);
+    canvas.addEventListener('mouseleave', stopDraw);
+
+    canvas.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      startDraw({ offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top });
+    });
+    canvas.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      draw({ offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top });
+    });
+    canvas.addEventListener('touchend', stopDraw);
+  }
+
+  function startDraw(e) {
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+    document.getElementById('sig-placeholder').style.display = 'none';
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    if (!hasSigned) {
+      hasSigned = true;
+      markCheck('chk-sig', true);
+      checkReady();
+    }
+  }
+
+  function stopDraw() { drawing = false; }
+
+  function clearSignature() {
+    if (!canvas) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('sig-placeholder').style.display = 'block';
+    hasSigned = false;
+    markCheck('chk-sig', false);
+    checkReady();
+  }
+
+  // Confirmation checkboxes
+  document.getElementById('confirm-reviewed').addEventListener('change', checkReady);
+  document.getElementById('confirm-consent').addEventListener('change', checkReady);
+
+  // Readiness
+  function markCheck(id, done) {
+    const el = document.getElementById(id);
+    if (done) el.classList.add('done');
+    else el.classList.remove('done');
+  }
+
+  function checkReady() {
+    const reviewed = document.getElementById('confirm-reviewed').checked;
+    const consent = document.getElementById('confirm-consent').checked;
+    markCheck('chk-confirm', reviewed && consent);
+    document.getElementById('btn-submit').disabled = !(hasSigned && programSelected && reviewed && consent);
+  }
+
+  // Submit
+  function submitIntake() {
+    const first = document.getElementById('pf-first').value;
+    const last = document.getElementById('pf-last').value;
+    const program = document.querySelector('input[name="program"]:checked');
+    const programName = program ? program.closest('.program-option').querySelector('.program-name').textContent : '';
+
+    document.getElementById('sum-line').textContent = first + ' ' + last + ' \u2014 ' + programName + ' referral';
+
+    const now = new Date();
+    document.getElementById('sum-time').textContent =
+      'Submitted ' + now.toLocaleDateString() + ' at ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    document.getElementById('completion-overlay').classList.add('visible');
+  }
+
+  function startNew() {
+    document.getElementById('input-first').value = '';
+    document.getElementById('input-last').value = '';
+    document.getElementById('input-dob').value = '';
+    document.getElementById('confirm-reviewed').checked = false;
+    document.getElementById('confirm-consent').checked = false;
+    document.querySelectorAll('.program-option').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('input[name="program"]').forEach(el => el.checked = false);
+    document.getElementById('staff-notes').value = '';
+    document.getElementById('emp-status').value = '';
+    document.getElementById('emp-education').value = '';
+    document.getElementById('emp-experience').value = '';
+    document.getElementById('emp-barriers').value = '';
+    programSelected = false;
+    hasSigned = false;
+
+    // Clear edited state on all prefilled fields
+    document.querySelectorAll('.prefilled.edited').forEach(el => el.classList.remove('edited'));
+    document.querySelectorAll('.source-tag.edited').forEach(tag => {
+      tag.classList.remove('edited');
+      tag.textContent = 'Source: Medi-Cal';
+    });
+
+    document.getElementById('panel-grid').classList.remove('visible');
+    document.getElementById('submit-bar').classList.remove('visible');
+    document.getElementById('metrics').style.display = 'none';
+    document.getElementById('empty-state').style.display = 'block';
+    document.getElementById('completion-overlay').classList.remove('visible');
+
+    ['chk-lookup','chk-program','chk-sig','chk-confirm'].forEach(id => markCheck(id, false));
+    document.getElementById('btn-submit').disabled = true;
+  }
+</script>
+
+</body>
+</html>
