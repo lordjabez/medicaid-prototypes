@@ -149,7 +149,7 @@
 
   .panel-grid.visible {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 11fr 9fr;
   }
 
   .panel {
@@ -157,6 +157,7 @@
     border: 1px solid #e2e2e2;
     border-radius: 8px;
     padding: 24px;
+    min-width: 0;
   }
 
   .panel.full-width { grid-column: 1 / -1; }
@@ -263,6 +264,42 @@
   }
 
   .reset-link:hover { color: #07648d; }
+
+  .checkbox-group {
+    border: 1px solid #97d4e9;
+    background: #e7f6f8;
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+
+  .checkbox-group.manual {
+    border-color: #c2c2c2;
+    background: #fff;
+  }
+
+  .check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    padding: 3px 0;
+    cursor: pointer;
+  }
+
+  .check-label input[type="checkbox"] {
+    accent-color: #0d7ea2;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 14px;
+  }
+
+  .form-row-3 .form-group { margin-bottom: 0; }
 
   .form-row {
     display: grid;
@@ -495,7 +532,7 @@
   hr { border: none; border-top: 1px solid #eff3f4; margin: 16px 0; }
 
   /* --- Responsive: tablet and below --- */
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     header { padding: 0 16px; height: auto; min-height: 56px; flex-wrap: wrap; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
     .sfhsa-logo svg { height: 36px; width: 36px; }
     .sfhsa-logo .logo-text { font-size: 11px; }
@@ -518,8 +555,8 @@
     .panel-grid.visible { grid-template-columns: 1fr; }
     .panel { padding: 20px 16px; }
 
-    .form-row { grid-template-columns: 1fr; gap: 0; }
-    .form-row .form-group { margin-bottom: 14px; }
+    .form-row, .form-row-3 { grid-template-columns: 1fr; gap: 0; }
+    .form-row .form-group, .form-row-3 .form-group { margin-bottom: 14px; }
 
     /* Signature section: stack vertically */
     .panel.full-width div[style*="grid-template-columns: 1fr 1fr"] {
@@ -587,7 +624,7 @@
   <div class="lookup-bar" id="lookup-bar">
     <div class="form-group narrow">
       <label>First Name <span class="required">*</span></label>
-      <input type="text" id="input-first" placeholder="First name">
+      <input type="text" id="input-first" placeholder="First name" autofocus>
     </div>
     <div class="form-group narrow">
       <label>Last Name <span class="required">*</span></label>
@@ -595,9 +632,9 @@
     </div>
     <div class="form-group">
       <label>Date of Birth <span class="required">*</span></label>
-      <input type="date" id="input-dob">
+      <input type="date" id="input-dob" min="1900-01-01">
     </div>
-    <button class="btn-primary" onclick="lookupApplicant()">Look Up</button>
+    <button class="btn-primary" id="btn-lookup" onclick="lookupApplicant()" disabled style="padding:10px 20px;">Look Up</button>
   </div>
 
   <!-- Empty state before lookup -->
@@ -627,90 +664,173 @@
           <span class="source-tag">Source: Medi-Cal</span>
         </div>
       </div>
-      <div class="form-group">
-        <label>Date of Birth</label>
-        <input type="text" id="pf-dob" class="prefilled locked" value="" readonly>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>Pronouns</label>
+          <select id="pf-pronouns" class="prefilled">
+            <option>She/Her</option>
+            <option>He/Him</option>
+            <option>They/Them</option>
+            <option>Other</option>
+          </select>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="text" id="pf-dob" class="prefilled locked" value="" readonly>
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Street Address</label>
+        <input type="text" id="pf-address" class="prefilled" value="1234 Oak Street, Apt 5B">
         <span class="source-tag">Source: Medi-Cal</span>
       </div>
-      <div class="form-group">
-        <label>Street Address</label>
-        <input type="text" id="pf-address" class="prefilled" value="1234 Oak Street, Apt 5B, San Francisco, CA 94110">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>City</label>
+        <input type="text" id="pf-city" class="prefilled" value="San Francisco">
         <span class="source-tag">Source: Medi-Cal</span>
+      </div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>State</label>
+          <input type="text" id="pf-state" class="prefilled" value="CA">
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
+        <div class="form-group">
+          <label>Zip Code</label>
+          <input type="text" id="pf-zip" class="prefilled" value="94110">
+          <span class="source-tag">Source: Medi-Cal</span>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Phone</label>
+          <label>Phone Number</label>
           <input type="tel" id="pf-phone" class="prefilled" value="(415) 555-0147">
           <span class="source-tag">Source: Medi-Cal</span>
         </div>
         <div class="form-group">
-          <label>Preferred Language</label>
-          <select id="pf-language" class="prefilled">
-            <option>Spanish</option>
-            <option>English</option>
-            <option>Mandarin</option>
-            <option>Cantonese</option>
-            <option>Vietnamese</option>
-            <option>Tagalog</option>
-            <option>Russian</option>
-            <option>Other</option>
-          </select>
-          <span class="source-tag">Source: Medi-Cal</span>
+          <label>Email Address <span style="font-weight:400; color:#71767a;">(Optional)</span></label>
+          <input type="email" id="pf-email" value="" placeholder="email@example.com">
         </div>
       </div>
     </div>
 
-    <!-- Demographics & Eligibility -->
+    <!-- Race, Ethnicity & Identity -->
     <div class="panel">
       <div class="panel-header">
-        <h2>Demographics &amp; Eligibility</h2>
+        <h2>Race, Ethnicity &amp; Identity</h2>
         <span class="badge badge-prefilled">Prefilled</span>
       </div>
       <div class="form-row" style="margin-bottom:14px;">
         <div class="form-group">
-          <label>Race</label>
-          <select id="pf-race" class="prefilled">
-            <option>Hispanic or Latino</option>
-            <option>White</option>
-            <option>Black or African American</option>
-            <option>Asian</option>
-            <option>Native Hawaiian or Pacific Islander</option>
-            <option>American Indian or Alaska Native</option>
-            <option>Two or More Races</option>
-            <option>Prefer not to say</option>
+          <label>Ethnicity</label>
+          <select id="pf-ethnicity" class="prefilled">
+            <option>Hispanic/Latino</option>
+            <option>Not Hispanic/Latino</option>
           </select>
           <span class="source-tag">Source: Medi-Cal</span>
         </div>
         <div class="form-group">
-          <label>Gender Identity</label>
-          <select id="pf-gender" class="prefilled">
-            <option>Female</option>
-            <option>Male</option>
-            <option>Non-binary</option>
-            <option>Transgender Female</option>
-            <option>Transgender Male</option>
+          <label>Language Spoken at Home</label>
+          <select id="pf-language" class="prefilled">
+            <option>Spanish</option>
+            <option>Chinese &ndash; Cantonese</option>
+            <option>Chinese &ndash; Mandarin</option>
+            <option>English</option>
+            <option>Filipino</option>
+            <option>Russian</option>
+            <option>Vietnamese</option>
             <option>Other</option>
-            <option>Prefer not to say</option>
           </select>
           <span class="source-tag">Source: Medi-Cal</span>
         </div>
       </div>
-      <div class="form-row" style="margin-bottom:14px;">
-        <div class="form-group">
-          <label>Family Size</label>
-          <input type="number" id="pf-famsize" class="prefilled" value="4" min="1">
-          <span class="source-tag">Source: Medi-Cal</span>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Race <span style="font-weight:400; color:#71767a;">(select all that apply)</span></label>
+        <div class="checkbox-group">
+          <label class="check-label"><input type="checkbox" name="race" value="aian"> American Indian/Alaskan Native</label>
+          <label class="check-label"><input type="checkbox" name="race" value="asian"> Asian</label>
+          <label class="check-label"><input type="checkbox" name="race" value="black"> Black/African American</label>
+          <label class="check-label"><input type="checkbox" name="race" value="nhpi"> Native Hawaiian/Other Pacific Islander</label>
+          <label class="check-label"><input type="checkbox" name="race" value="white" checked> White</label>
         </div>
-        <div class="form-group">
-          <label>Annual Household Income</label>
-          <input type="text" id="pf-income" class="prefilled" value="$32,400">
-          <span class="source-tag">Source: Medi-Cal</span>
-        </div>
+        <span class="source-tag">Source: Medi-Cal</span>
+      </div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Gender Identity</label>
+        <select id="pf-gender" class="prefilled">
+          <option>Female</option>
+          <option>Male</option>
+          <option>Genderqueer/Gender Non-binary</option>
+          <option>Trans Female</option>
+          <option>Trans Male</option>
+          <option>Not Listed</option>
+        </select>
+        <span class="source-tag">Source: Medi-Cal</span>
       </div>
       <div class="form-group">
-        <label>Income Certification</label>
-        <input type="text" id="pf-cert" class="prefilled locked" value="Verified via Medi-Cal enrollment" readonly>
-        <span class="source-tag">Source: Medi-Cal (auto-certified)</span>
+        <label>Sexual Orientation</label>
+        <select id="pf-orientation">
+          <option value="">Select...</option>
+          <option>Bisexual</option>
+          <option>Gay/Lesbian/Same-Gender Loving</option>
+          <option>Questioning/Unsure</option>
+          <option>Straight/Heterosexual</option>
+          <option>Not Listed</option>
+          <option>Decline to answer</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Family Size, Income & Certification -->
+    <div class="panel full-width">
+      <div class="panel-header">
+        <h2>Family Size, Income &amp; Certification</h2>
+        <span class="badge badge-prefilled">Prefilled</span>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div class="form-group">
+              <label>Family Type</label>
+              <select id="pf-famtype" class="prefilled">
+                <option>Single Headed Family</option>
+                <option>Dual Headed Family</option>
+              </select>
+              <span class="source-tag">Source: Medi-Cal</span>
+            </div>
+            <div class="form-group">
+              <label>Family Size</label>
+              <input type="number" id="pf-famsize" class="prefilled" value="4" min="1" max="8">
+              <span class="source-tag">Source: Medi-Cal</span>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:14px;">
+            <label>Estimated Income (next 12 months)</label>
+            <input type="text" id="pf-income" class="prefilled" value="$32,400">
+            <span class="source-tag">Source: Medi-Cal</span>
+          </div>
+          <div class="form-group">
+            <label>Income Level</label>
+            <input type="text" id="pf-income-level" class="prefilled locked" value="" readonly>
+            <span class="source-tag">Auto-calculated from family size and income</span>
+          </div>
+        </div>
+        <div>
+          <div class="form-group" style="margin-bottom:14px;">
+            <label>Income Verification Source</label>
+            <div class="checkbox-group manual">
+              <label class="check-label"><input type="checkbox" name="income-source" value="payroll"> Payroll Stub</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="tax"> Tax Return</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="unemployment"> Unemployment Benefits</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="veterans"> Veteran's Benefits</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="public" checked> Public Benefits (Medi-Cal)</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="rental"> Rental Assistance</label>
+              <label class="check-label"><input type="checkbox" name="income-source" value="self"> Self-Certified</label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -882,8 +1002,54 @@
   let hasSigned = false;
   let canvas, ctx, drawing = false;
   let programSelected = false;
-  const PREFILLED_COUNT = 11;
+  const PREFILLED_COUNT = 16;
   const DATA_SOURCES = 1;
+
+  // HUD income limits by family size (1-8 persons)
+  const INCOME_LIMITS = [
+    { eli: 39150, low: 65250, mod: 104400 },
+    { eli: 44750, low: 74600, mod: 119300 },
+    { eli: 50350, low: 83900, mod: 134200 },
+    { eli: 55900, low: 93200, mod: 149100 },
+    { eli: 60400, low: 100700, mod: 161050 },
+    { eli: 64850, low: 108150, mod: 173000 },
+    { eli: 69350, low: 115600, mod: 184900 },
+    { eli: 73800, low: 123050, mod: 196850 }
+  ];
+
+  function calcIncomeLevel() {
+    const size = parseInt(document.getElementById('pf-famsize').value) || 1;
+    const raw = document.getElementById('pf-income').value.replace(/[^0-9.]/g, '');
+    const income = parseFloat(raw) || 0;
+    const idx = Math.min(size, 8) - 1;
+    const limits = INCOME_LIMITS[idx];
+    let level = 'Above Moderate Income';
+    if (income <= limits.eli) level = 'Extremely Low Income';
+    else if (income <= limits.low) level = 'Low Income';
+    else if (income <= limits.mod) level = 'Moderate Income';
+    document.getElementById('pf-income-level').value = level;
+  }
+
+  // Set max DOB to today
+  const dobInput = document.getElementById('input-dob');
+  dobInput.max = new Date().toISOString().split('T')[0];
+
+  function checkLookupReady() {
+    const first = document.getElementById('input-first').value.trim();
+    const last = document.getElementById('input-last').value.trim();
+    const dob = dobInput.value;
+    const valid = first && last && dob && dob >= '1900-01-01' && dob <= dobInput.max;
+    document.getElementById('btn-lookup').disabled = !valid;
+    return valid;
+  }
+
+  document.querySelectorAll('#input-first, #input-last, #input-dob').forEach(el => {
+    el.addEventListener('input', checkLookupReady);
+  });
+
+  document.getElementById('lookup-bar').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); if (checkLookupReady()) lookupApplicant(); }
+  });
 
   function lookupApplicant() {
     const first = document.getElementById('input-first').value.trim();
@@ -901,6 +1067,8 @@
     // Format DOB as MM/DD/YYYY for the prefilled field
     const [y, m, d] = dob.split('-');
     document.getElementById('pf-dob').value = m + '/' + d + '/' + y;
+
+    calcIncomeLevel();
 
     document.querySelectorAll('.prefilled').forEach(el => {
       originalValues[el.id] = el.value;
@@ -951,9 +1119,14 @@
     const el = document.getElementById(fieldId);
     if (el && originalValues[fieldId] !== undefined) {
       el.value = originalValues[fieldId];
+      if (fieldId === 'pf-famsize' || fieldId === 'pf-income') calcIncomeLevel();
       updateChanged();
     }
   }
+
+  // Recalculate income level when family size or income changes
+  document.getElementById('pf-famsize').addEventListener('input', calcIncomeLevel);
+  document.getElementById('pf-income').addEventListener('input', calcIncomeLevel);
 
   // Program selection
   function selectProgram(value) {
@@ -965,15 +1138,19 @@
   }
 
   // Signature canvas
-  function initCanvas() {
-    canvas = document.getElementById('sig-canvas');
+  function sizeCanvas() {
     const area = document.getElementById('sig-area');
-    canvas.width = area.offsetWidth;
-    canvas.height = area.offsetHeight;
+    canvas.width = area.clientWidth;
+    canvas.height = area.clientHeight;
     ctx = canvas.getContext('2d');
     ctx.strokeStyle = '#212123';
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
+  }
+
+  function initCanvas() {
+    canvas = document.getElementById('sig-canvas');
+    sizeCanvas();
 
     canvas.addEventListener('mousedown', startDraw);
     canvas.addEventListener('mousemove', draw);
@@ -993,6 +1170,11 @@
       draw({ offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top });
     });
     canvas.addEventListener('touchend', stopDraw);
+
+    new ResizeObserver(() => {
+      sizeCanvas();
+      if (hasSigned) clearSignature();
+    }).observe(document.getElementById('sig-area'));
   }
 
   function startDraw(e) {
@@ -1071,6 +1253,10 @@
     document.getElementById('emp-education').value = '';
     document.getElementById('emp-experience').value = '';
     document.getElementById('emp-barriers').value = '';
+    document.getElementById('pf-email').value = '';
+    document.getElementById('pf-orientation').value = '';
+    document.querySelectorAll('input[name="race"]').forEach(el => el.checked = false);
+    document.querySelectorAll('input[name="income-source"]').forEach(el => el.checked = false);
     programSelected = false;
     hasSigned = false;
 
